@@ -1,3 +1,12 @@
+# Define Matern covariance function
+matern.cov<-function(d, nu = 2, kappa = 1,sig=1){
+  if(nu == 0.5){
+    return(sig^2*exp( - d * alpha))
+  }
+  gamma.d<- ifelse(d>0,sig^2 * (2^(1-nu)/ gamma(nu)) * ((d*kappa)^nu) * besselK(d*kappa, nu),sig^2)
+  return(gamma.d)
+}
+
 # Function for simulating the data
 GP.data <- function(coordinates,nu=1,kappa=1,sig=1,mu=50){
   coordinates = as.data.frame(coordinates)
