@@ -2,7 +2,7 @@
 title: "INLA Simulation study"
 author: "Xiang Ye"
 date: "2023-03-06"
-output: pdf_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -49,11 +49,13 @@ bbox(coords.sp)
 ```
 
 # Load source functions
-
+```{r source}
+source('Functions.R')
+```
 
 # Data Simulation
 
-```{r}
+```{r eval=FALSE}
 # Define Matern covariance function
 matern.cov<-function(d, nu = 2, kappa = 1,sig=1){
   if(nu == 0.5){
@@ -62,9 +64,7 @@ matern.cov<-function(d, nu = 2, kappa = 1,sig=1){
   gamma.d<- ifelse(d>0,sig^2 * (2^(1-nu)/ gamma(nu)) * ((d*kappa)^nu) * besselK(d*kappa, nu),sig^2)
   return(gamma.d)
 }
-```
 
-```{r}
 # Function to simulate the data
 GP.data <- function(coordinates,nu=1,kappa=1,sig=1,mu=50){
   coordinates = as.data.frame(coordinates)
@@ -87,7 +87,7 @@ Gaussian_dat
 
 # INLA
 
-```{r}
+```{r eval=FALSE}
 # Function include constructing a mesh, fit an SPDE, and do the INLA to find the posteriors of the parameters
 mesh.test2 <- function(data, coordinates, boundary, max_edge_1,
                       max_edge_2, min_angle_1, min_angle_2,
