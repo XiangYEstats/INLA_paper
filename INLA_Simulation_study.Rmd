@@ -194,8 +194,28 @@ mesh.test2(data = Gaussian_dat, coordinates=coords.sp,
 ## offset_1: 1~20
 ## offset_2: 1~20
 
+me1<-seq(5,20,by=5)
+me2<-seq(5,20,by=5)
+ma1<-seq(10,30,by=5)
+ma2<-seq(10,30,by=5)
+co<-seq(1,20,by=5)
+os1<-seq(1,20,by=5)
+os2<-seq(1,20,by=5)
 
-
+par.combined<-matrix(NA,nrow=length(me1)*length(me2)*length(ma1)*length(ma2)*length(co)*length(os1)*length(os2)
+                       ,ncol = 7)
+aux.i<-1
+for(i.me1 in 1:length(me1)){
+  for(i.me2 in 1:length(me2)){
+    for(i.ma1 in 1:length(ma1)){
+      for(i.ma2 in 1:length(ma2)){
+        for(i.co in 1:length(co)){
+          for(i.os1 in 1:length(os1)){
+            for(i.os2 in 1:length(os2)){
+              par.combined[aux.i,]<-c(me1[i.me1],me2[i.me2],ma1[i.ma1],ma2[i.ma2],co[i.co],os1[i.os1],os2[i.os2])
+                aux.i<-aux.i+1
+            }}}}}}}
+colnames(par.combined)<-c('edge1','edge2','angle1','angle2','cutoff','offset1','offset2')
 ```
 
 # find better mesh (example)
