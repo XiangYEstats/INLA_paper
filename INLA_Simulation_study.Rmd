@@ -49,6 +49,7 @@ bbox(coords.sp)
 ```
 
 # Load source functions
+
 ```{r source}
 source('Functions.R')
 ```
@@ -77,7 +78,6 @@ GP.data <- function(coordinates,nu=1,kappa=1,sig=1,mu=50){
   return(data)
 }
 ```
-
 
 ```{r}
 set.seed(123)
@@ -172,23 +172,13 @@ border<-spTransform(border.aux,CRS("+proj=utm +units=km +datum=WGS84 +zone=14"))
 bbox(border)
 ```
 
-```{r,warning=FALSE}
+```{r, message=FALSE,warning=FALSE}
 # Run the INLA process to find the posteriors
+set.seed(3874)
 mesh.test2(data = Gaussian_dat, coordinates=coords.sp,
            boundary=border, max_edge_1=10, max_edge_2=12,
            min_angle_1=20, min_angle_2=20, cutoff=5,
            offset_1=5, offset_2=7)
-```
-
-```{r,warning=FALSE}
-# For different random seeds, the results are different
-set.seed(564)
-mesh.test2(data = abs(GP.data(coords.sp,nu=1,kappa=4,sig=30,mu=50)), 
-           coordinates=coords.sp,
-           boundary=border, max_edge_1=10, max_edge_2=12,
-           min_angle_1=20, min_angle_2=20, cutoff=5,
-           offset_1=5, offset_2=7)
-
 ```
 
 # The testing range of the parameters
@@ -205,7 +195,6 @@ mesh.test2(data = abs(GP.data(coords.sp,nu=1,kappa=4,sig=30,mu=50)),
 ## offset_2: 1~20
 ```
 
-
 # find better mesh (example)
 
 ```{r,warning=FALSE}
@@ -215,8 +204,6 @@ mesh.test2(data = Gaussian_dat, coordinates=coords.sp,
            min_angle_1=20, min_angle_2=20, cutoff=5,
            offset_1=5, offset_2=7)
 ```
-
-
 
 ```{r}
 edge1 = c(1:20)
@@ -250,58 +237,3 @@ for (i in edge1){
 ```{r,warning=FALSE}
 posteriors.edge1
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
