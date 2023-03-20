@@ -18,7 +18,7 @@ GP.data <- function(coordinates,nu=1,kappa=1,sig=1,mu=50){
   return(data)
 }
 
-GP.data(s.grid, nu=2, kappa=4, sig=50, mu=50)
+# GP.data(s.grid, nu=2, kappa=4, sig=50, mu=50)
 
 # Function for testing the mesh
 ## including the data, locations, boundary,

@@ -9,7 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r,message=FALSE}
 library(MASS)
 library(sp)
 library(gstat)
@@ -28,7 +28,7 @@ library(automap)
 # Data
 
 ```{r}
-load('PollutantsMExicoCity2021.RData')
+load('aux/PollutantsMExicoCity2021.RData')
 ```
 
 ```{r}
@@ -47,6 +47,9 @@ bbox(coords.sp.aux)
 coords.sp<-spTransform(coords.sp.aux,CRS("+proj=utm +units=km +datum=WGS84 +zone=14"))
 bbox(coords.sp)
 ```
+
+# Load source functions
+
 
 # Data Simulation
 
