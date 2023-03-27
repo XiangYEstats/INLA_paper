@@ -37,9 +37,9 @@ border<-spTransform(border.aux,CRS("+proj=utm +units=km +datum=WGS84 +zone=14"))
 ## offset_1: 1~20
 ## offset_2: 1~20
 ## We start with three for now
-me1<-seq(5,20,by=3)
-me2<-seq(5,20,by=3)
-co<-seq(1,10,by=1)
+me1<-seq(5,20,by=5)
+me2<-seq(5,20,by=5)
+co<-seq(1,10,by=2)
 
 par.combined<-matrix(NA,nrow=length(me1)*length(me2)*length(co),ncol = 3)
 aux.i<-1
@@ -53,7 +53,7 @@ colnames(par.combined)<-c('edge1','edge2','cutoff')
 n.pars<-nrow(par.combined)
 ##Testing data set
 set.seed(89275)
-M<-50
+M<-10
 data.sim<-matrix(NA,nrow=M,ncol = length(coords.sp))
 for(j in 1:M)data.sim[j,]<-GP.data(coords.sp,nu=1,kappa=4,sig=15,mu=45)
 
