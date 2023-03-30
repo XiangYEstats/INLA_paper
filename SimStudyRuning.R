@@ -64,8 +64,8 @@ for( i.par in 1:n.pars){
   colnames(posteriors)=c("prior range", "prior sigma", "posterior range", "posterior sigma", "dic", "post_expect_se", "precision")
   for(j in 1:M){
     post = mesh.test2(data = data.sim[j,], coordinates=coords.sp,
-                      boundary=border, max_edge_1= par.combined[1,i.par] , max_edge_2=par.combined[2,i.par],
-                      min_angle_1=20, min_angle_2=20, cutoff=par.combined[3,i.par],
+                      boundary=border, max_edge_1= par.combined[i.par,1] , max_edge_2=par.combined[i.par,2],
+                      min_angle_1=20, min_angle_2=20, cutoff=par.combined[i.par,3],
                       offset_1=5, offset_2=7)
     posteriors[j,1]=post$range0
     posteriors[j,2]=post$sigma0
@@ -79,3 +79,4 @@ for( i.par in 1:n.pars){
   print(i.par)
   }
 
+save(file = 'aux/Output.RData',OUT.Sim,par.combined)
