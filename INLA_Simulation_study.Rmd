@@ -311,7 +311,7 @@ mesh.test2(data = Gaussian_dat, coordinates=coords.sp,
 ```{r,warning=FALSE}
 mesh.1 <- inla.mesh.2d(loc = coords.sp,boundary = border,
                           max.edge=c(10, 12),
-                          cutoff=3,) 
+                          cutoff=5) 
 mesh.1$n
 # mesh size
 plot(spTransform(CDMXpol,CRS("+proj=utm +units=km +datum=WGS84 +zone=14")),
@@ -397,6 +397,80 @@ dplyr::arrange(lost, DIC)
 dplyr::arrange(lost, range_sd)
 ```
 
+### Compare the meshes
+
+```{r,warning=FALSE}
+## similar to the dissertation one with only edge and cutoff parameters
+mesh.1 <- inla.mesh.2d(loc = coords.sp,boundary = border,
+                          max.edge=c(10, 12),
+                          cutoff=5) 
+mesh.1$n
+# mesh size
+plot(spTransform(CDMXpol,CRS("+proj=utm +units=km +datum=WGS84 +zone=14")),
+     xlim=c(450,510),ylim=c(2080,2190))
+plot(mesh.1,add=TRUE)
+plot(coords.sp,add=TRUE,pch=20,col=2)
+```
+
+```{r,warning=FALSE}
+# best range
+mesh.range <- inla.mesh.2d(loc = coords.sp,boundary = border,
+                          max.edge=c(15, 15),
+                          cutoff=7) 
+mesh.range$n
+# mesh size
+plot(spTransform(CDMXpol,CRS("+proj=utm +units=km +datum=WGS84 +zone=14")),
+     xlim=c(450,510),ylim=c(2080,2190))
+plot(mesh.range,add=TRUE)
+plot(coords.sp,add=TRUE,pch=20,col=2)
+```
+
+```{r,warning=FALSE}
+# best sd
+mesh.sd <- inla.mesh.2d(loc = coords.sp,boundary = border,
+                          max.edge=c(5, 15),
+                          cutoff=1) 
+mesh.sd$n
+# mesh size
+plot(spTransform(CDMXpol,CRS("+proj=utm +units=km +datum=WGS84 +zone=14")),
+     xlim=c(450,510),ylim=c(2080,2190))
+plot(mesh.sd,add=TRUE)
+plot(coords.sp,add=TRUE,pch=20,col=2)
+```
+
+```{r,warning=FALSE}
+# best DIC
+mesh.dic <- inla.mesh.2d(loc = coords.sp,boundary = border,
+                          max.edge=c(20, 5),
+                          cutoff=5) 
+mesh.dic$n
+# mesh size
+plot(spTransform(CDMXpol,CRS("+proj=utm +units=km +datum=WGS84 +zone=14")),
+     xlim=c(450,510),ylim=c(2080,2190))
+plot(mesh.dic,add=TRUE)
+plot(coords.sp,add=TRUE,pch=20,col=2)
+```
+
+```{r,warning=FALSE}
+mesh.comb <- inla.mesh.2d(loc = coords.sp,boundary = border,
+                          max.edge=c(15, 5),
+                          cutoff=3) 
+mesh.comb$n
+# mesh size
+plot(spTransform(CDMXpol,CRS("+proj=utm +units=km +datum=WGS84 +zone=14")),
+     xlim=c(450,510),ylim=c(2080,2190))
+plot(mesh.comb,add=TRUE)
+plot(coords.sp,add=TRUE,pch=20,col=2)
+```
+
+
+
+
+
+
+
+
+
 
 ## Output plots
 
@@ -424,6 +498,11 @@ ggplot(data = lost %>% dplyr::filter(cutoff==1), aes(x=edge1, y=edge2, z=range))
 ```{r}
 lost %>% dplyr::filter(cutoff==1)
 ```
+
+
+
+
+
 
 
 
