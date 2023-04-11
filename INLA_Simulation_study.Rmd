@@ -311,9 +311,19 @@ mesh.test2(data = Gaussian_dat, coordinates=coords.sp,
 ```{r,warning=FALSE}
 mesh.1 <- inla.mesh.2d(loc = coords.sp,boundary = border,
                           max.edge=c(10, 12),
-                          min.angle = c(20, 20),
-                          cutoff=3,
-                          offset = c(5, 7)) 
+                          cutoff=3,) 
+mesh.1$n
+# mesh size
+plot(spTransform(CDMXpol,CRS("+proj=utm +units=km +datum=WGS84 +zone=14")),
+     xlim=c(450,510),ylim=c(2080,2190))
+plot(mesh.1,add=TRUE)
+plot(coords.sp,add=TRUE,pch=20,col=2)
+```
+
+```{r,warning=FALSE}
+mesh.1 <- inla.mesh.2d(loc = coords.sp,boundary = border,
+                          max.edge=c(15, 5),
+                          cutoff=3,) 
 mesh.1$n
 # mesh size
 plot(spTransform(CDMXpol,CRS("+proj=utm +units=km +datum=WGS84 +zone=14")),
@@ -323,21 +333,97 @@ plot(coords.sp,add=TRUE,pch=20,col=2)
 ```
 
 
+# Output
+
+```{r}
+load("Output.RData")
+```
+
+```{r}
+OUT.Sim[[1]]
+```
 
 
 
+## Output Analysis
+
+```{r}
+nu = 1
+kappa = 4
+## true range
+range_0 = sqrt(8*nu)/kappa
+range_0
+```
+
+```{r}
+## true sigma
+sigma_0 = 15
+```
+
+```{r}
+lost = as.data.frame(matrix(0,nrow=80, ncol=8))
+colnames(lost)=c("comb","range","sd","DIC","range_sd","edge1","edge2","cutoff")
+```
+
+```{r}
+options(scipen = 999)
+for (i in c(1:80)){
+  lost[i,1] = i
+  lost[i,2] = 1/10 * sum((OUT.Sim[[i]]$`posterior range` - range_0)^2)
+  lost[i,3] = 1/10 * sum((OUT.Sim[[i]]$`posterior sigma` - sigma_0)^2)
+  lost[i,4] = 1/10 * sum(OUT.Sim[[i]]$dic)
+  lost[i,5] = 0.5*1/10 * sum((OUT.Sim[[i]]$`posterior range` - range_0)^2) + 0.5*1/10 * sum((OUT.Sim[[i]]$`posterior sigma` - sigma_0)^2)
+}
+```
+
+```{r}
+lost
+```
+
+```{r}
+dplyr::arrange(lost, range)
+```
+
+```{r}
+dplyr::arrange(lost, sd)
+```
+
+```{r}
+dplyr::arrange(lost, DIC)
+```
+
+```{r}
+## 0.5*range + 0.5*sd
+dplyr::arrange(lost, range_sd)
+```
 
 
+## Output plots
 
+```{r}
+edge1 = c(rep(5,20), rep(10,20), rep(15,20), rep(20,20))
+edge2 = rep(c(rep(5,5), rep(10,5), rep(15,5), rep(20,5)),4)
+cutoff = rep(c(1,3,5,7,9),16)
+```
 
+```{r}
+lost$edge1 = edge1
+lost$edge2 = edge2
+lost$cutoff = cutoff
+```
 
+```{r}
+lost
+```
 
+```{r}
+ggplot(data = lost %>% dplyr::filter(cutoff==1), aes(x=edge1, y=edge2, z=range)) +
+  geom_tile()+ggtitle("ranges when cutoff=1")+scale_fill_viridis()
+```
 
-
-
-
-
-
+```{r}
+lost %>% dplyr::filter(cutoff==1)
+```
 
 
 
